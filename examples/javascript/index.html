@@ -31,7 +31,6 @@
     function getParams(){
         var urlVars = getUrlVars();
         siniestroId = urlVars['id'];
-        var name = urlVars['name'];
     }
 
     function getUrlVars(){
@@ -49,14 +48,16 @@
     getParams();
     listFiles();
     function uploadFile() {
+      var results = document.getElementById('results');
+      results.textContent ='Loading...';
+
       var ACCESS_TOKEN = 'x2jj8CcppwAAAAAAAAAAC6JQSuLGA0RFBsrflkgB4f7xM5Ni5Sp2vf12dhTAZq5m';
       var dbx = new Dropbox({ accessToken: ACCESS_TOKEN });
       var fileInput = document.getElementById('file-upload');
       var file = fileInput.files[0];
       dbx.filesUpload({path: '/'+siniestroId+'/' + file.name, contents: file})
         .then(function(response) {
-          var results = document.getElementById('results');
-          results.appendChild(document.createTextNode('File uploaded!'));
+          results.textContent ='File uploaded!';
           listFiles();
           console.log(response);
         })
@@ -82,6 +83,7 @@
 
     function displayFiles(files) {
       var filesList = document.getElementById('files');
+      filesList.innerHTML = '';
       var li;
       for (var i = 0; i < files.length; i++) {
         li = document.createElement('li');
